@@ -10,14 +10,24 @@
     "128": "vite.svg"
   },
   "action": {
-    "default_popup": "index.html",
-    "default_icon": "vite.svg"
+    "default_title": "YouTube Transcript Q&A",
+    "default_popup": "index.html"
+  },
+  "side_panel": {
+    "default_path": "index.html"
   },
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "tabs",
+    "sidePanel",
+    "storage"
   ],
   "host_permissions": [
     "https://www.youtube.com/*"
-  ]
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  }
 }

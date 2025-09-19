@@ -7,7 +7,6 @@ import { StringOutputParser } from "@langchain/core/output_parsers";
 import { PromptTemplate } from "@langchain/core/prompts";
 import { ConversationChain } from "langchain/chains";
 import { BufferMemory } from "langchain/memory";
-import { HuggingFaceInferenceEmbeddings } from "@langchain/community/embeddings/hf";
 import dotenv from "dotenv";
 import cors from "cors"
 dotenv.config();
@@ -15,14 +14,12 @@ dotenv.config();
 const app = express();
 app.use(express.json())
 app.use(cors({
-    credentials: true,
-    origin: "localhost:5173",
+    origin: "*", // Or specific origins that match your extension
+    methods: ["GET", "POST"],
+    credentials: true
 }));
 
-let embedder: any;
-let embeddingData: number[][] = [];
 let docs: string[] = [];
-
 
 const memory = new BufferMemory({
     returnMessages: true,
@@ -32,23 +29,14 @@ const memory = new BufferMemory({
 });
 
 
-// Initialize the embedder once (not on every request)
-(async () => {
-    console.log("Loading local embedding model...");
-    embedder = await pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2");
-    console.log("Model ready ✅");
-})();
-
-app.get("/transcript", async (req: Request, res: Response) => {
-    // const { url } = req.query; // frontend sends video URL
-
-    //   if (!url) {
-    //     return res.status(400).json({ success: false, error: "Missing video URL" });
-    //   }
-
+app.post("/transcript", async (req: Request, res: Response) => {
+    const { url } = req.body;
+    if(!url){
+        throw new Error("URL Not Found!")
+    }
     try {
         docs = []
-        const loader = YoutubeLoader.createFromUrl("https://youtu.be/gO0bvT_smdM?si=1YxKN8BC-kASQPDT" as string, {
+        const loader = YoutubeLoader.createFromUrl(url as string, {
             language: "en",
             addVideoInfo: true,
         });
@@ -62,19 +50,9 @@ app.get("/transcript", async (req: Request, res: Response) => {
         });
         docs = await splitter.splitText(fullTranscript);
 
-        const embeddings = new HuggingFaceInferenceEmbeddings({
-            apiKey: process.env.hugging_face_key!,
-            model: "sentence-transformers/all-MiniLM-L6-v2",
-            provider: "hf-inference",
-        });
-
-        embeddingData = await embeddings.embedDocuments(docs);
-
         return res.json({
             success: true,
-            //   videoUrl: url,
             chunks: docs,
-            embeddings: embeddingData,
         });
     } catch (err) {
         console.error("Transcript error:", err);
@@ -110,10 +88,10 @@ app.get("/chat", async (req: Request, res: Response) => {
 
         let response = await chain.call({
             context: docs,
-            question: "i need you to explain this what about this in 10000 words?",
+            question,
         });
 
-        res.write(`data: ${JSON.stringify({ success: true, input: "i need you to explain this what about this in 10000 words?", output: response.response })}\n\n`);
+        res.write(`data: ${JSON.stringify({ success: true, input: question, output: response.response })}\n\n`);
         res.end();
     } catch (err) {
         console.error("Transcript error:", err);

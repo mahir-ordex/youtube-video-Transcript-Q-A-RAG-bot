@@ -3,5 +3,6 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
+import "../public/manifest.json";
 createRoot(document.getElementById('root')).render(_jsx(StrictMode, { children: _jsx(App, {}) }));
 //# sourceMappingURL=main.js.map
