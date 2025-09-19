@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Transcript Q&A RAG Bot",
+  "version": "1.0.0",
+  "description": "Ask questions and get answers from YouTube video transcripts using RAG.",
+  "icons": {
+    "16": "vite.svg",
+    "32": "vite.svg",
+    "48": "vite.svg",
+    "128": "vite.svg"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": "vite.svg"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://www.youtube.com/*"
+  ]
+}
