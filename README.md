@@ -1,22 +1,53 @@
+# YouTube Video Transcript Q&A RAG Bot 🎥🤖
 
-![alt text](image.png)
+A chatbot that lets you upload YouTube video transcripts and ask natural language questions about them.  
+It uses **RAG (Retrieval-Augmented Generation)** with the **Gemini API** to give accurate, context-based answers.
+![alt text](image-1.png)
 
-///Clone the repository:
+---
 
+## 🚀 Features
+- Upload YouTube transcripts and chat with them.
+- Retrieval-Augmented Generation for more reliable answers.
+- Simple and clean frontend.
+- Powered by Gemini API.
+
+---
+
+## 🛠️ Installation
+
+### 1. Clone the repository
+```bash
 git clone https://github.com/yourusername/youtube-video-Transcript-Q-A-RAG-bot.git
 cd youtube-video-Transcript-Q-A-RAG-bot
 
-///2.
+2. Install dependencies
 npm install
 
-///Create a .env file in the root directory with your Gemini API key:
+3. Add environment variables
+
+Create a .env file in the root directory and add your Gemini API key:
+
 gemini_api_key=your_api_key_here
 
-///Build the frontend:
+4. Build the frontend
 cd client
 npm run build
-cd ..
 
 
-Contact
-Mahir Mankad - @mahir_mankad12- mahirmankad69@gmail.com
+▶️ Usage
+
+Start the app after setup:
+
+npm start
+
+
+Then open in your browser:
+
+http://localhost:3000
+
+📩 Contact
+
+Mahir Mankad
+📧 Email: mahirmankad69@gmail.com
+🐦 Twitter: @mahir_mankad12
