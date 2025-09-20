@@ -140,6 +140,7 @@ h2 {
 
 .chat-input button {
   padding: 0 16px;
+  margin-right: 16px;
   border-radius: 20px;
   border: none;
   background: #2b7a78;
